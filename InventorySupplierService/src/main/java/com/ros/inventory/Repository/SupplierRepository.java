@@ -20,8 +20,8 @@ public interface SupplierRepository extends JpaRepository<Supplier, UUID> {
 
 	@Query(value = "SELECT * FROM supplier s LEFT JOIN supplier_basic_info sb on s.supplierbasic_id = sb.supplier_info_id"
 			+ " where sb.supplier_bussiness_name= :supplier_bussiness_name ", nativeQuery = true)
-	Supplier getByName(@Param("supplier_bussiness_name") String sName);
-//for invoice.
+	List<Supplier> getByName(@Param("supplier_bussiness_name") String sName);
+
 	@Query(value = "SELECT * FROM supplier s LEFT JOIN puchase_order p on s.supplier_id = p.purchase_id"
 			+ " where p.purchase_id=:purchase_id ", nativeQuery = true)
 	Supplier getByParchase(@Param("purchase_id") UUID id);

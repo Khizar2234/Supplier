@@ -11,6 +11,7 @@ import com.ros.inventory.entities.Supplier;
 @Component
 public interface SupplierMapper {
 
+	@Mapping(source = "supplier.supplierId", target = "supplierId")
 	@Mapping(source = "supplier.supplierBasic.supplierBusinessName", target = "supplierName")
 	@Mapping(source = "supplier.supplierType", target = "supplierType")
 	@Mapping(source = "supplier.supplierContact.email", target = "email")
