@@ -101,17 +101,23 @@ public class SupplierManager implements ISupplierManager {
 	}
 
 	@Override
-	public SupplierDto byName(String sName) throws InventoryException {
+	public List<SupplierDto> byName(String sName) throws InventoryException {
 		// TODO Auto-generated method stub
-		Supplier supplierFromDB = supplyRepo.getByName(sName);
-		if (supplierFromDB == null) {
-			throw new InventoryException(" No Supplier Is Present by this name");
-		}
+        List<Supplier> supplierFromDB=supplyRepo.getByName(sName);
+        List<SupplierDto> supplierDtos=new ArrayList<SupplierDto>();
+		//Supplier supplierFromDB = supplyRepo.getByName(sName);
+        
+        if (supplierFromDB.isEmpty()) {
+            throw new InventoryException(" No Supplier Is Present by this name");
+        }
+        else {
+            for(Supplier supplier : supplierFromDB) {
+            SupplierDto dto = supplierMapper.convertToSupplierDto(supplier);
+            supplierDtos.add(dto);
+            }
+        }
 
-		SupplierDto dto = supplierMapper.convertToSupplierDto(supplierFromDB);
-
-		return dto;
-
+       return supplierDtos;
 	}
 
 	@Override

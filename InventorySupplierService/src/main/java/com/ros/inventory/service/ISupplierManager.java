@@ -21,7 +21,7 @@ public interface ISupplierManager {
 
 	Supplier delete(UUID id) throws InventoryException;
 
-	SupplierDto byName(String sName) throws InventoryException;
+	List<SupplierDto> byName(String sName) throws InventoryException;
 
 	SupplierDescriptionDto description(UUID id) throws InventoryException;
 

@@ -1,5 +1,7 @@
 package com.ros.inventory.controller.dto;
 
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SupplierDto 
 {
-	    private String supplierName;
-	    private String supplierType;
-	    private String email;
-	    private long mobile;
-
+	private UUID supplierId;
+	private String supplierName;
+	private String supplierType;
+	private String email;
+	private long mobile;
 	    
 }

@@ -23,7 +23,7 @@ spring:
       enabled: false
       
 swagger:
-  url: http://localhost:8093/inventory
+  url: http://localhost:9093/inventory
   
 eureka:
   client:
