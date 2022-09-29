@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -25,4 +26,9 @@ public interface SupplierRepository extends JpaRepository<Supplier, UUID> {
 	@Query(value = "SELECT * FROM supplier s LEFT JOIN puchase_order p on s.supplier_id = p.purchase_id"
 			+ " where p.purchase_id=:purchase_id ", nativeQuery = true)
 	Supplier getByParchase(@Param("purchase_id") UUID id);
+	
+	@Modifying
+	@Query(value = "UPDATE supplier SET supplier_status = false WHERE supplier_id = :supplier_id", nativeQuery = true)
+	void deleteSupplier(@Param("supplier_id") UUID supplierId);
+	
 }
