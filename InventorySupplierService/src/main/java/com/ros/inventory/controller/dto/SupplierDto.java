@@ -18,5 +18,6 @@ public class SupplierDto
 	private String supplierType;
 	private String email;
 	private long mobile;
+	
 	    
 }

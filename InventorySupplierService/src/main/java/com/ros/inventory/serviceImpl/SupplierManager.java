@@ -73,13 +73,16 @@ public class SupplierManager implements ISupplierManager {
 		// TODO Auto-generated method stub
 		List<Supplier> supplierFromDB = supplyRepo.getAll();
 
-		if (supplierFromDB == null || supplierFromDB.size() == 0) {
+		// Filters out all the inactive suppliers
+		List<Supplier> activeSuppliers = supplierFromDB.stream().filter(p -> p.isSupplierStatus() == true).toList();
+
+		if (activeSuppliers == null || activeSuppliers.size() == 0) {
 			throw new InventoryException(" No Supplier Is Present");
 		}
 
 		List<SupplierDto> suppdto = new ArrayList<SupplierDto>();
 
-		for (Supplier s : supplierFromDB) {
+		for (Supplier s : activeSuppliers) {
 			SupplierDto d = supplierMapper.convertToSupplierDto(s);
 			suppdto.add(d);
 		}
@@ -92,10 +95,11 @@ public class SupplierManager implements ISupplierManager {
 		// TODO Auto-generated method stub
 		Supplier supplierFromDB = supplyRepo.getById(id);
 
-		if (supplierFromDB == null) {
+		if (supplierFromDB == null || !supplierFromDB.isSupplierStatus()) {
 			throw new InventoryException("No Supplier is present");
 		} else {
-			supplyRepo.deleteById(id);
+			supplyRepo.deleteSupplier(id);
+			supplierFromDB.setSupplierStatus(false);
 		}
 		return supplierFromDB;
 	}
@@ -103,21 +107,20 @@ public class SupplierManager implements ISupplierManager {
 	@Override
 	public List<SupplierDto> byName(String sName) throws InventoryException {
 		// TODO Auto-generated method stub
-        List<Supplier> supplierFromDB=supplyRepo.getByName(sName);
-        List<SupplierDto> supplierDtos=new ArrayList<SupplierDto>();
-		//Supplier supplierFromDB = supplyRepo.getByName(sName);
-        
-        if (supplierFromDB.isEmpty()) {
-            throw new InventoryException(" No Supplier Is Present by this name");
-        }
-        else {
-            for(Supplier supplier : supplierFromDB) {
-            SupplierDto dto = supplierMapper.convertToSupplierDto(supplier);
-            supplierDtos.add(dto);
-            }
-        }
+		List<Supplier> supplierFromDB = supplyRepo.getByName(sName);
+		List<SupplierDto> supplierDtos = new ArrayList<SupplierDto>();
+		// Supplier supplierFromDB = supplyRepo.getByName(sName);
 
-       return supplierDtos;
+		if (supplierFromDB.isEmpty()) {
+			throw new InventoryException(" No Supplier Is Present by this name");
+		} else {
+			for (Supplier supplier : supplierFromDB) {
+				SupplierDto dto = supplierMapper.convertToSupplierDto(supplier);
+				supplierDtos.add(dto);
+			}
+		}
+
+		return supplierDtos;
 	}
 
 	@Override
