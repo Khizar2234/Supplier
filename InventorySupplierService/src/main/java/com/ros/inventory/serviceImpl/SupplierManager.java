@@ -62,7 +62,6 @@ public class SupplierManager implements ISupplierManager {
 
 		Supplier supplier = supplyRepo.getById(supply.getSupplierId());
 		
-		System.out.println(supplier.getSupplierId());
 		supply.setProducts(supplier.getProducts());
 
 		return supplyRepo.saveAndFlush(supply);
@@ -95,7 +94,7 @@ public class SupplierManager implements ISupplierManager {
 		// TODO Auto-generated method stub
 		Supplier supplierFromDB = supplyRepo.getById(id);
 
-		if ((supplierFromDB == null) || ( SupplierStatus.NotActive==supplierFromDB.getSupplierStatus())) {
+		if ((supplierFromDB == null) || (supplierFromDB.getSupplierStatus() == SupplierStatus.NotActive)) {
 			throw new InventoryException("No Supplier is present");
 		} else {
 			supplyRepo.deleteSupplier(id);

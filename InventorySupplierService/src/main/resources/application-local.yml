@@ -6,9 +6,9 @@ spring:
   application:
     name: InventorySupplier
   datasource:
-    url: jdbc:postgresql://localhost:7575/inventory?CreateDatabaseIfNotExist=true
+    url: jdbc:postgresql://localhost:5432/inventory?CreateDatabaseIfNotExist=true
     username: postgres
-    password: admin
+    password: root
     initialization-mode: always
     driver-class-name: org.postgresql.Driver
   jpa:
