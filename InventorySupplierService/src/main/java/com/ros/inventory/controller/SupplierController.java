@@ -76,7 +76,7 @@ public class SupplierController {
 	public ResponseEntity<?> bySupplierName(@PathVariable(value = "sName") String sName) {
 		ResponseEntity<?> response;
 		try {
-			response = new ResponseEntity<>(suppliermanager.byName(sName), HttpStatus.OK);
+			response = new ResponseEntity<>(suppliermanager.byName(sName.toLowerCase()), HttpStatus.OK);
 		} catch (InventoryException e) {
 			response = new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
 			e.printStackTrace();

@@ -109,11 +109,11 @@ public class SupplierManager implements ISupplierManager {
 		List<Supplier> supplierFromDB = supplyRepo.getByName(sName);
 		List<SupplierDto> supplierDtos = new ArrayList<SupplierDto>();
 		// Supplier supplierFromDB = supplyRepo.getByName(sName);
-
-		if (supplierFromDB.isEmpty()) {
-			throw new InventoryException(" No Supplier Is Present by this name");
+		List<Supplier> activeSuppliers = supplierFromDB.stream().filter(p -> p.getSupplierStatus() == SupplierStatus.Active).toList();
+		if (activeSuppliers.isEmpty()) {
+			throw new InventoryException(" No Active Supplier Is Present by this name");
 		} else {
-			for (Supplier supplier : supplierFromDB) {
+			for (Supplier supplier : activeSuppliers) {
 				SupplierDto dto = supplierMapper.convertToSupplierDto(supplier);
 				supplierDtos.add(dto);
 			}
