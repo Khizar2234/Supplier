@@ -32,6 +32,10 @@ public class Supplier implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private SupplierType supplierType;
 
+	@Column(name = "supplier_status")
+	@Enumerated(EnumType.STRING)
+	private SupplierStatus supplierStatus;
+
 	@Column(name = "restaurant_name")
 	private String restaurantName;
 
@@ -59,7 +63,6 @@ public class Supplier implements Serializable {
 	@JoinColumn(name = "supplierconytact_id")
 	private SupplierContact supplierContact;
 	
-	@Column(name = "supplier_status")
-	private boolean supplierStatus;
+
 
 }
