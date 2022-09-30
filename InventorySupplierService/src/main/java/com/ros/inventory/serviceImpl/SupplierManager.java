@@ -3,7 +3,7 @@ package com.ros.inventory.serviceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+import com.ros.inventory.entities.SupplierStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,6 @@ import com.ros.inventory.controller.dto.AddProductDto;
 import com.ros.inventory.controller.dto.ProductDto;
 import com.ros.inventory.controller.dto.SupplierDescriptionDto;
 import com.ros.inventory.controller.dto.SupplierDto;
-import com.ros.inventory.entities.Product;
 import com.ros.inventory.entities.Supplier;
 import com.ros.inventory.mapper.AddProductMapper;
 import com.ros.inventory.mapper.ProductMapper;
@@ -62,7 +61,8 @@ public class SupplierManager implements ISupplierManager {
 		supply.setProducts(null);
 
 		Supplier supplier = supplyRepo.getById(supply.getSupplierId());
-
+		
+		System.out.println(supplier.getSupplierId());
 		supply.setProducts(supplier.getProducts());
 
 		return supplyRepo.saveAndFlush(supply);
@@ -74,7 +74,7 @@ public class SupplierManager implements ISupplierManager {
 		List<Supplier> supplierFromDB = supplyRepo.getAll();
 
 		// Filters out all the inactive suppliers
-		List<Supplier> activeSuppliers = supplierFromDB.stream().filter(p -> p.isSupplierStatus() == true).toList();
+		List<Supplier> activeSuppliers = supplierFromDB.stream().filter(p -> p.getSupplierStatus() == SupplierStatus.Active).toList();
 
 		if (activeSuppliers == null || activeSuppliers.size() == 0) {
 			throw new InventoryException(" No Supplier Is Present");
@@ -95,11 +95,11 @@ public class SupplierManager implements ISupplierManager {
 		// TODO Auto-generated method stub
 		Supplier supplierFromDB = supplyRepo.getById(id);
 
-		if (supplierFromDB == null || !supplierFromDB.isSupplierStatus()) {
+		if ((supplierFromDB == null) || ( SupplierStatus.NotActive==supplierFromDB.getSupplierStatus())) {
 			throw new InventoryException("No Supplier is present");
 		} else {
 			supplyRepo.deleteSupplier(id);
-			supplierFromDB.setSupplierStatus(false);
+			supplierFromDB.setSupplierStatus(SupplierStatus.NotActive);
 		}
 		return supplierFromDB;
 	}
