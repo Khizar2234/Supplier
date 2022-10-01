@@ -22,6 +22,7 @@ import com.ros.inventory.controller.dto.ExternalSupplierDto;
 import com.ros.inventory.controller.dto.ExternalSupplierInfoDto;
 import com.ros.inventory.controller.dto.InternalSupplierDto;
 import com.ros.inventory.controller.dto.InternalSupplierInfoDto;
+import com.ros.inventory.entities.Product;
 import com.ros.inventory.entities.Supplier;
 import com.ros.inventory.service.ISupplierManager;
 
@@ -202,18 +203,19 @@ public class SupplierController {
 		}
 		return response;
 	}
+
+	// @PostMapping("/addProd")
+    // public ResponseEntity<?> add(@RequestBody Product product){
+    //     ResponseEntity<?> response;
+
+    //     try{
+    //         response = new ResponseEntity<>(suppliermanager.addProduct(product), HttpStatus.OK);
+    //     }
+    //     catch(InventoryException e){
+    //         response= new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+    //     }
+
+    //     return response;
+    // }
 	
-	/*------------------ FOR ADDING PRODUCT----------------------------------*/
-	@PostMapping("/addproduct")
-	@ResponseBody
-	public ResponseEntity<?> addProduct(@RequestBody Supplier add) {
-		ResponseEntity<?> response;
-		try {
-			response = new ResponseEntity<>(suppliermanager.addProduct(add), HttpStatus.OK);
-		} catch (InventoryException e) {
-			response = new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
-			e.printStackTrace();
-		}
-		return response;
-	}
 }

@@ -10,6 +10,7 @@ import com.ros.inventory.controller.dto.InternalSupplierDto;
 import com.ros.inventory.controller.dto.InternalSupplierInfoDto;
 import com.ros.inventory.controller.dto.SupplierDescriptionDto;
 import com.ros.inventory.controller.dto.SupplierDto;
+import com.ros.inventory.entities.Product;
 import com.ros.inventory.entities.Supplier;
 
 public interface ISupplierManager {
@@ -34,6 +35,6 @@ public interface ISupplierManager {
 
 	ExternalSupplierInfoDto internalSupplierDesc(UUID id) throws InventoryException;
 
-	Supplier addProduct(Supplier add) throws InventoryException;
+	Product addProduct(Product add) throws InventoryException;
 
 }

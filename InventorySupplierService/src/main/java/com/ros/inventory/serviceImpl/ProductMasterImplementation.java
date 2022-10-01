@@ -21,13 +21,22 @@ public class ProductMasterImplementation implements ProductMasterManager{
     @Autowired SupplierRepository supplierRepository;
     @Autowired ProductRepository productRepository;
 
+
+    // Validation for external/supplier supplier not given in function as it is expected that this function will be called only for external supplier
     @Override
     public ProductMaster addProductMaster(UUID supplierID) throws Exception {
         
         ProductMaster newProductMaster;
         if(supplierRepository.existsById(supplierID)){
-            newProductMaster = new ProductMaster();
-            newProductMaster.setSupplier(supplierRepository.getById(supplierID));
+
+            if(productMasterRepo.getProductMasterBySupplier(supplierRepository.getById(supplierID)) == null){
+                newProductMaster = new ProductMaster();
+                newProductMaster.setSupplier(supplierRepository.getById(supplierID));
+            }
+            else{
+                throw new Exception("Supplier already has product master");
+            }
+
         }
         else{
             throw new Exception("Supplier does not exist in DB. Check id");
