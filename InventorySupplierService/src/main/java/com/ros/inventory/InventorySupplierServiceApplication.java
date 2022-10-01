@@ -54,6 +54,26 @@ public class InventorySupplierServiceApplication {
 	public SupplierDescriptionMapper emapper() {
 		return new SupplierDescriptionMapperImpl();
 	}
+	
+	@Bean
+	public ExternalSupplierMapper exsupmapper() {
+		return new ExternalSupplierMapperImpl();
+	}
+	
+	@Bean
+	public InternalSupplierMapper insupmapper() {
+		return new InternalSupplierMapperImpl();
+	}
+	
+	@Bean
+	public ExternalSupplierInfoMapper exsupinfomapper() {
+		return new ExternalSupplierInfoMapperImpl();
+	}
+	
+	@Bean
+	public InternalSupplierInfoMapper insupinfomapper() {
+		return new InternalSupplierInfoMapperImpl();
+	}
 
 	@Bean
 	public AddProductMapper amapper() {
