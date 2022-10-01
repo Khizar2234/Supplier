@@ -64,6 +64,5 @@ public class Product implements Serializable {
 
 	@Column(name = "product_finalPrice")
 	private double finalPrice;
-
 	
 }
