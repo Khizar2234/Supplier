@@ -109,6 +109,8 @@ public class SupplierManager implements ISupplierManager {
 		Supplier supplier = supplyRepo.getById(supply.getSupplierId());
 		
 		supply.setProducts(supplier.getProducts());
+		supply.setSupplierStatus(supplier.getSupplierStatus());
+		supply.setSupplierType(supplier.getSupplierType());
 
 		return supplyRepo.saveAndFlush(supply);
 	}
@@ -125,6 +127,8 @@ public class SupplierManager implements ISupplierManager {
 		Supplier supplier = supplyRepo.getById(supply.getSupplierId());
 		
 		supply.setProducts(supplier.getProducts());
+		supply.setSupplierStatus(supplier.getSupplierStatus());
+		supply.setSupplierType(supplier.getSupplierType());
 
 		return supplyRepo.saveAndFlush(supply);
 	}
