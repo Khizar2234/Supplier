@@ -19,7 +19,7 @@ public interface ISupplierManager {
 	Supplier saveSupplier(InternalSupplierDto supply) throws InventoryException;
 
 	Supplier updateSupplier(InternalSupplierInfoDto supply) throws InventoryException;
-	
+
 	Supplier updateSupplier(ExternalSupplierInfoDto supply) throws InventoryException;
 
 	List<SupplierDto> show() throws InventoryException;
@@ -28,7 +28,11 @@ public interface ISupplierManager {
 
 	List<SupplierDto> byName(String sName) throws InventoryException;
 
-	SupplierDescriptionDto description(UUID id) throws InventoryException;
+	Object description(UUID id) throws InventoryException;
+
+	InternalSupplierInfoDto externalSupplierDesc(UUID id) throws InventoryException;
+
+	ExternalSupplierInfoDto internalSupplierDesc(UUID id) throws InventoryException;
 
 	Supplier addProduct(Supplier add) throws InventoryException;
 

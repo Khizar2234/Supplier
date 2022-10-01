@@ -160,8 +160,37 @@ public class SupplierController {
 		return response;
 	}
 
+	/*------------------------------ FOR VEIWING THE PARTICULAR EXTERNAL SUPPLIER DESCRIPTION------------------------------ */
+	@GetMapping("/descExt/{id}")
+	@ResponseBody
+	public ResponseEntity<?> getExternalDescription(@PathVariable(value = "id") UUID id) {
+		ResponseEntity<?> response;
+		try {
+			response = new ResponseEntity<>(suppliermanager.externalSupplierDesc(id), HttpStatus.OK);
+		} catch (InventoryException e) {
+			response = new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	/*------------------------------ FOR VEIWING THE PARTICULAR INTERNAL SUPPLIER DESCRIPTION------------------------------ */
+	@GetMapping("/descInt/{id}")
+	@ResponseBody
+	public ResponseEntity<?> getInternalDescription(@PathVariable(value = "id") UUID id) {
+		ResponseEntity<?> response;
+		try {
+			response = new ResponseEntity<>(suppliermanager.internalSupplierDesc(id), HttpStatus.OK);
+		} catch (InventoryException e) {
+			response = new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	//If any error comes in this, remove this and use above mappings
 	/*------------------------------ FOR VEIWING THE PARTICULAR SUPPLIER DESCRIPTION------------------------------ */
-	@GetMapping("/descp/{id}")
+	@GetMapping("/desc/{id}")
 	@ResponseBody
 	public ResponseEntity<?> getDescription(@PathVariable(value = "id") UUID id) {
 		ResponseEntity<?> response;
@@ -173,7 +202,7 @@ public class SupplierController {
 		}
 		return response;
 	}
-
+	
 	/*------------------ FOR ADDING PRODUCT----------------------------------*/
 	@PostMapping("/addproduct")
 	@ResponseBody

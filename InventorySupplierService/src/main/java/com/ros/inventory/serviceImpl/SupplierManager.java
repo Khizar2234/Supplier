@@ -47,16 +47,16 @@ public class SupplierManager implements ISupplierManager {
 
 	@Autowired
 	private AddProductMapper addMapper;
-	
+
 	@Autowired
 	private ExternalSupplierMapper exSupMapper;
-	
+
 	@Autowired
 	private InternalSupplierMapper inSupMapper;
-	
+
 	@Autowired
 	private InternalSupplierInfoMapper inSupInfoMapper;
-	
+
 	@Autowired
 	private ExternalSupplierInfoMapper exSupInfoMapper;
 
@@ -66,33 +66,35 @@ public class SupplierManager implements ISupplierManager {
 	@Override
 	public Supplier saveSupplier(ExternalSupplierDto supply) throws InventoryException {
 		// TODO Auto-generated method stub
-		
+
 		Supplier supplierEntity = exSupMapper.convertToSupplierEntity(supply);
 		supplierEntity.setSupplierType(SupplierType.External);
 		supplierEntity.setSupplierStatus(SupplierStatus.Active);
-		
-		/*Supplier supplierFromDB = supplyRepo.getById(supplierEntity.getSupplierId());
 
-		if (supplierFromDB != null) {
-			throw new InventoryException("Supplier Already Exist");
-		}*/
+		/*
+		 * Supplier supplierFromDB = supplyRepo.getById(supplierEntity.getSupplierId());
+		 * 
+		 * if (supplierFromDB != null) { throw new
+		 * InventoryException("Supplier Already Exist"); }
+		 */
 
 		return supplyRepo.saveAndFlush(supplierEntity);
 	}
-	
+
 	@Override
 	public Supplier saveSupplier(InternalSupplierDto supply) throws InventoryException {
 		// TODO Auto-generated method stub
-		
+
 		Supplier supplierEntity = inSupMapper.convertToSupplierEntity(supply);
 		supplierEntity.setSupplierType(SupplierType.Internal);
 		supplierEntity.setSupplierStatus(SupplierStatus.Active);
-		
-		/*Supplier supplierFromDB = supplyRepo.getById(supplierEntity.getSupplierId());
 
-		if (supplierFromDB != null) {
-			throw new InventoryException("Supplier Already Exist");
-		}*/
+		/*
+		 * Supplier supplierFromDB = supplyRepo.getById(supplierEntity.getSupplierId());
+		 * 
+		 * if (supplierFromDB != null) { throw new
+		 * InventoryException("Supplier Already Exist"); }
+		 */
 
 		return supplyRepo.saveAndFlush(supplierEntity);
 	}
@@ -101,31 +103,31 @@ public class SupplierManager implements ISupplierManager {
 	@Modifying
 	public Supplier updateSupplier(InternalSupplierInfoDto supplierInfo) throws InventoryException {
 		// TODO Auto-generated method stub
-		
+
 		Supplier supply = inSupInfoMapper.convertToSupplierEntity(supplierInfo);
 
 		supply.setProducts(null);
 
 		Supplier supplier = supplyRepo.getById(supply.getSupplierId());
-		
+
 		supply.setProducts(supplier.getProducts());
 		supply.setSupplierStatus(supplier.getSupplierStatus());
 		supply.setSupplierType(supplier.getSupplierType());
 
 		return supplyRepo.saveAndFlush(supply);
 	}
-	
+
 	@Override
 	@Modifying
 	public Supplier updateSupplier(ExternalSupplierInfoDto supplierInfo) throws InventoryException {
 		// TODO Auto-generated method stub
-		
+
 		Supplier supply = exSupInfoMapper.convertToSupplierEntity(supplierInfo);
 
 		supply.setProducts(null);
 
 		Supplier supplier = supplyRepo.getById(supply.getSupplierId());
-		
+
 		supply.setProducts(supplier.getProducts());
 		supply.setSupplierStatus(supplier.getSupplierStatus());
 		supply.setSupplierType(supplier.getSupplierType());
@@ -139,8 +141,15 @@ public class SupplierManager implements ISupplierManager {
 		List<Supplier> supplierFromDB = supplyRepo.getAll();
 
 		// Filters out all the inactive suppliers
-		List<Supplier> activeSuppliers = supplierFromDB.stream().filter(p -> p.getSupplierStatus() == SupplierStatus.Active).toList();
+		
+		//List<Supplier> activeSuppliers = supplierFromDB.stream().filter(p -> p.getSupplierStatus() == SupplierStatus.Active).toList();
 
+		List<Supplier> activeSuppliers = new ArrayList<>();
+		for(Supplier supplier: supplierFromDB) {
+			if(supplier.getSupplierStatus() == SupplierStatus.Active)
+				activeSuppliers.add(supplier);
+		}
+		
 		if (activeSuppliers == null || activeSuppliers.size() == 0) {
 			throw new InventoryException(" No Supplier Is Present");
 		}
@@ -175,7 +184,15 @@ public class SupplierManager implements ISupplierManager {
 		List<Supplier> supplierFromDB = supplyRepo.getByName(sName);
 		List<SupplierDto> supplierDtos = new ArrayList<SupplierDto>();
 		// Supplier supplierFromDB = supplyRepo.getByName(sName);
-		List<Supplier> activeSuppliers = supplierFromDB.stream().filter(p -> p.getSupplierStatus() == SupplierStatus.Active).toList();
+		
+		//List<Supplier> activeSuppliers = supplierFromDB.stream().filter(p -> p.getSupplierStatus() == SupplierStatus.Active).toList();
+		
+		List<Supplier> activeSuppliers = new ArrayList<>();
+		for(Supplier supplier: supplierFromDB) {
+			if(supplier.getSupplierStatus() == SupplierStatus.Active)
+				activeSuppliers.add(supplier);
+		}
+		
 		if (activeSuppliers.isEmpty()) {
 			throw new InventoryException(" No Active Supplier Is Present by this name");
 		} else {
@@ -189,7 +206,7 @@ public class SupplierManager implements ISupplierManager {
 	}
 
 	@Override
-	public SupplierDescriptionDto description(UUID id) throws InventoryException {
+	public InternalSupplierInfoDto externalSupplierDesc(UUID id) throws InventoryException {
 		// TODO Auto-generated method stub
 
 		Supplier supplierFromDB = supplyRepo.getById(id);
@@ -197,9 +214,39 @@ public class SupplierManager implements ISupplierManager {
 			throw new InventoryException("Supplier Details is not present");
 		}
 
-		SupplierDescriptionDto Dto = exMapper.convertToDto(supplierFromDB);
+		InternalSupplierInfoDto Dto = inSupInfoMapper.convertToInternalSupplierInfoDto(supplierFromDB);
 		return Dto;
 
+	}
+
+	@Override
+	public ExternalSupplierInfoDto internalSupplierDesc(UUID id) throws InventoryException {
+		// TODO Auto-generated method stub
+
+		Supplier supplierFromDB = supplyRepo.getById(id);
+		if (supplierFromDB == null) {
+			throw new InventoryException("Supplier Details is not present");
+		}
+
+		ExternalSupplierInfoDto Dto = exSupInfoMapper.convertToExternalSupplierInfoDto(supplierFromDB);
+		return Dto;
+
+	}
+
+	@Override
+	// It's working for now, if it gives error, comments this out and use above
+	public Object description(UUID id) throws InventoryException {
+		// TODO Auto-generated method stub
+
+		Supplier supplierFromDB = supplyRepo.getById(id);
+		
+		if(supplierFromDB.getSupplierStatus() == SupplierStatus.NotActive)
+			throw new InventoryException("Supplier Details is not present");
+
+		if (supplierFromDB.getSupplierType() == SupplierType.External) {
+			return exSupInfoMapper.convertToExternalSupplierInfoDto(supplierFromDB);
+		}
+		return inSupInfoMapper.convertToInternalSupplierInfoDto(supplierFromDB);
 	}
 
 	@Override
