@@ -19,8 +19,7 @@ public interface SupplierDescriptionMapper
 	
 	@Mapping(source = "supplier.supplierContact", target = "contact")
 	
-	@Mapping(source = "supplier.supplierAddress.street", target = "street")
-	@Mapping(source = "supplier.supplierAddress.area", target = "area")
+	@Mapping(source = "supplier.supplierAddress.addressLine", target = "area")
 	@Mapping(source = "supplier.supplierAddress.city", target = "city")
 	@Mapping(source = "supplier.supplierAddress.state", target = "state")
 	@Mapping(source = "supplier.supplierAddress.country", target = "country")

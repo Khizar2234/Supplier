@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ros.inventory.Exception.InventoryException;
 import com.ros.inventory.controller.dto.AddProductDto;
+import com.ros.inventory.controller.dto.ExternalSupplierDto;
+import com.ros.inventory.controller.dto.ExternalSupplierInfoDto;
+import com.ros.inventory.controller.dto.InternalSupplierDto;
+import com.ros.inventory.controller.dto.InternalSupplierInfoDto;
 import com.ros.inventory.entities.Supplier;
 import com.ros.inventory.service.ISupplierManager;
 
@@ -29,9 +33,37 @@ public class SupplierController {
 	private ISupplierManager suppliermanager;
 
 	/*-------------- FOR ADDING SUPPLIER ------------------------------------*/
-	@PostMapping("/add")
+//	@PostMapping("/add")
+//	@ResponseBody
+//	public ResponseEntity<?> add(@RequestBody Supplier supply) {
+//		ResponseEntity<?> response;
+//		try {
+//			response = new ResponseEntity<>(suppliermanager.saveSupplier(supply), HttpStatus.OK);
+//		} catch (InventoryException e) {
+//			response = new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+//			e.printStackTrace();
+//		}
+//		return response;
+//	}
+	
+	/*-------------- FOR ADDING EXTERNAL SUPPLIER ------------------------------------*/
+	@PostMapping("/addExt")
 	@ResponseBody
-	public ResponseEntity<?> add(@RequestBody Supplier supply) {
+	public ResponseEntity<?> add(@RequestBody ExternalSupplierDto supply) {
+		ResponseEntity<?> response;
+		try {
+			response = new ResponseEntity<>(suppliermanager.saveSupplier(supply), HttpStatus.OK);
+		} catch (InventoryException e) {
+			response = new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	/*-------------- FOR ADDING INTERNAL SUPPLIER ------------------------------------*/
+	@PostMapping("/addInt")
+	@ResponseBody
+	public ResponseEntity<?> add(@RequestBody InternalSupplierDto supply) {
 		ResponseEntity<?> response;
 		try {
 			response = new ResponseEntity<>(suppliermanager.saveSupplier(supply), HttpStatus.OK);
@@ -42,10 +74,38 @@ public class SupplierController {
 		return response;
 	}
 
-	/*------------------- FOR UPDATING SUPPLIER ----------------------------------*/
-	@PutMapping("/update")
+//	/*------------------- FOR UPDATING SUPPLIER ----------------------------------*/
+//	@PutMapping("/update")
+//	@ResponseBody
+//	public ResponseEntity<?> update(@RequestBody Supplier supply) {
+//		ResponseEntity<?> response;
+//		try {
+//			response = new ResponseEntity<>(suppliermanager.updateSupplier(supply), HttpStatus.OK);
+//		} catch (InventoryException e) {
+//			response = new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+//			e.printStackTrace();
+//		}
+//		return response;
+//	}
+	
+	/*------------------- FOR UPDATING INTERNAL SUPPLIER ----------------------------------*/
+	@PutMapping("/updateInt")
 	@ResponseBody
-	public ResponseEntity<?> update(@RequestBody Supplier supply) {
+	public ResponseEntity<?> update(@RequestBody InternalSupplierInfoDto supply) {
+		ResponseEntity<?> response;
+		try {
+			response = new ResponseEntity<>(suppliermanager.updateSupplier(supply), HttpStatus.OK);
+		} catch (InventoryException e) {
+			response = new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	/*------------------- FOR UPDATING EXTERNAL SUPPLIER ----------------------------------*/
+	@PutMapping("/updateExt")
+	@ResponseBody
+	public ResponseEntity<?> update(@RequestBody ExternalSupplierInfoDto supply) {
 		ResponseEntity<?> response;
 		try {
 			response = new ResponseEntity<>(suppliermanager.updateSupplier(supply), HttpStatus.OK);

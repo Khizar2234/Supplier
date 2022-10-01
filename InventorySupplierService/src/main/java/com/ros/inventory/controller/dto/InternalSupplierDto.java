@@ -18,10 +18,13 @@ public class InternalSupplierDto {
 	//BASIC
 	private String supplierBusinessName;
 	private String supplierTradeName;
-    
+    private String restaurantName;
     //ADDRESS
-    private UUID supplierId;
-    private Address  address;
+    private String addressLine;
+    private String city;
+    private String state;
+    private String country;
+    private long pincode;
     
     //CONTACT
     private String firstName;
