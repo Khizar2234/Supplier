@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ros.inventory.Exception.InventoryException;
+import com.ros.inventory.Repository.ProductMasterRepository;
 import com.ros.inventory.Repository.ProductRepository;
 import com.ros.inventory.Repository.SupplierRepository;
 import com.ros.inventory.controller.dto.AddProductDto;
@@ -22,6 +23,7 @@ import com.ros.inventory.controller.dto.InternalSupplierInfoDto;
 import com.ros.inventory.controller.dto.ProductDto;
 import com.ros.inventory.controller.dto.SupplierDescriptionDto;
 import com.ros.inventory.controller.dto.SupplierDto;
+import com.ros.inventory.entities.Product;
 import com.ros.inventory.entities.Supplier;
 import com.ros.inventory.mapper.AddProductMapper;
 import com.ros.inventory.mapper.ExternalSupplierInfoMapper;
@@ -62,6 +64,9 @@ public class SupplierManager implements ISupplierManager {
 
 	@Autowired
 	private ProductMapper pMapper;
+
+	@Autowired
+	ProductRepository productRepository;
 
 	@Override
 	public Supplier saveSupplier(ExternalSupplierDto supply) throws InventoryException {
@@ -250,16 +255,10 @@ public class SupplierManager implements ISupplierManager {
 	}
 
 	@Override
-	@Modifying
-	public Supplier addProduct(Supplier addProduct) throws InventoryException {
-		// TODO Auto-generated method stub
+	public Product addProduct(Product addProduct) throws InventoryException {
+		System.out.println(addProduct.getProductName());
 
-		Supplier s = supplyRepo.getById(addProduct.getSupplierId());
-
-		s.getProducts().addAll(addProduct.getProducts());
-
-		return supplyRepo.saveAndFlush(s);
-
+		return productRepository.saveAndFlush(addProduct);
 	}
 
 }
