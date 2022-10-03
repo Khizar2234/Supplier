@@ -3,6 +3,8 @@ server:
   servlet:
     context-path: /supplier
 spring:
+  main: 
+    allow-circular-references: true
   application:
     name: SupplierService
   datasource:
