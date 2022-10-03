@@ -1,5 +1,6 @@
 package com.ros.inventory.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ public class ProductMasterImplementation implements ProductMasterManager{
     @Autowired ProductRepository productRepository;
 
 
-    // Validation for external/supplier supplier not given in function as it is expected that this function will be called only for external supplier
+    // Validation for external/internal supplier not given in function as it is expected that this function will be called only for external supplier
     @Override
     public ProductMaster addProductMaster(UUID supplierID) throws Exception {
         
@@ -61,6 +62,26 @@ public class ProductMasterImplementation implements ProductMasterManager{
         temp.setProductList(productList);
 
         return productMasterRepo.saveAndFlush(temp);
+    }
+
+
+    @Override
+    public Object viewProductMaster(UUID productMasterID) throws Exception {
+        if(!productMasterRepo.existsById(productMasterID)){
+            throw new Exception("Product master with given id does not exist");
+        }
+
+        ProductMaster productMaster = productMasterRepo.getProductMasterById(productMasterID);
+        List<Product> productList;
+
+        if(productMaster.getProductList() == null){
+            throw  new Exception("No items in product master. Add items to view them.");
+        }
+        else{
+            productList = new ArrayList<>(productMaster.getProductList());
+        }
+
+        return productList;
     }
     
 }
