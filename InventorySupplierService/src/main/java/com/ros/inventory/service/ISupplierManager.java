@@ -37,4 +37,8 @@ public interface ISupplierManager {
 
 	Product addProduct(Product add) throws InventoryException;
 
+	Product editProduct(Product product) throws InventoryException;
+
+	List<Product> viewAllProducts() throws InventoryException;
+
 }

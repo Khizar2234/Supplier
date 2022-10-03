@@ -3,6 +3,8 @@ package com.ros.inventory.serviceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import com.ros.inventory.controller.ProductController;
 import com.ros.inventory.entities.SupplierStatus;
 import com.ros.inventory.entities.SupplierType;
 
@@ -256,9 +258,36 @@ public class SupplierManager implements ISupplierManager {
 
 	@Override
 	public Product addProduct(Product addProduct) throws InventoryException {
-		System.out.println(addProduct.getProductName());
 
+		Product product = productRepository.getByID(addProduct.getProductId());
+		if(product != null){
+			throw new InventoryException("Product already in database. Cannot add, can only be updated.");
+		}
 		return productRepository.saveAndFlush(addProduct);
 	}
 
+	@Override public Product editProduct(Product product) throws InventoryException {
+
+		Product product1 = productRepository.getByID(product.getProductId());
+		if(product1 == null){
+			throw new InventoryException("Product does not exist in database");
+		}
+
+		Product productFromDB = productRepository.getByID(product.getProductId());
+		productFromDB = product;
+
+		return productRepository.saveAndFlush(productFromDB);
+	}
+
+	@Override public List<Product> viewAllProducts() throws InventoryException {
+		List<Product> productList = productRepository.getAll();
+		if(productList == null){
+			throw new InventoryException("No products in db.");
+		}
+		else{
+			// Convert to DTO if required
+			// If multiple product DTO types are there then change method signature to type List<Object>
+			return productList;
+		}
+	}
 }

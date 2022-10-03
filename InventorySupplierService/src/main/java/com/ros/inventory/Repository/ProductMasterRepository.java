@@ -2,6 +2,7 @@ package com.ros.inventory.Repository;
 
 import java.util.UUID;
 
+import com.ros.inventory.entities.Product;
 import com.ros.inventory.entities.Supplier;
 import org.springframework.data.jpa.repository.JpaRepository;
 

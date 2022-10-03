@@ -3,11 +3,7 @@ package com.ros.inventory.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ros.inventory.Exception.InventoryException;
 import com.ros.inventory.entities.Product;
@@ -20,7 +16,7 @@ public class ProductController {
 	@Autowired
 	private ISupplierManager suppliermanager;
 
-	@PostMapping("/addProd")
+	  @PostMapping("/addProd")
     public ResponseEntity<?> add(@RequestBody Product product){
         ResponseEntity<?> response;
 
@@ -29,6 +25,34 @@ public class ProductController {
         }
         catch(InventoryException e){
             response= new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
+
+        return response;
+    }
+
+    @PutMapping("/editProduct")
+    public ResponseEntity<?> edit(@RequestBody Product product) throws InventoryException{
+        ResponseEntity<?> response;
+
+        try{
+          response = new ResponseEntity<>(suppliermanager.editProduct(product), HttpStatus.OK);
+        }
+        catch (InventoryException e){
+          response = new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
+
+        return response;
+    }
+
+    @GetMapping("/viewAllProducts")
+    public ResponseEntity<?> get() throws InventoryException{
+        ResponseEntity<?> response;
+
+        try{
+            response = new ResponseEntity<>(suppliermanager.viewAllProducts(), HttpStatus.OK);
+        }
+        catch (InventoryException e){
+            response = new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
 
         return response;
