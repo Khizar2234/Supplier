@@ -32,10 +32,6 @@ public class Supplier implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private SupplierType supplierType;
 
-	@Column(name = "supplier_status")
-	@Enumerated(EnumType.STRING)
-	private SupplierStatus supplierStatus;
-
 	@Column(name = "restaurant_name")
 	private String restaurantName;
 
@@ -62,7 +58,5 @@ public class Supplier implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "supplierconytact_id")
 	private SupplierContact supplierContact;
-	
-
 
 }

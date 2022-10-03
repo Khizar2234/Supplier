@@ -13,7 +13,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -23,7 +23,7 @@ spring:
       enabled: false
       
 swagger:
-  url: https://inventory-service.test.supplier.com/supplier
+  url: https://inventory-service.test.restaurantonesolution.com/inventory
   
 eureka:
   client:

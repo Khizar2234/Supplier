@@ -1,5 +1,5 @@
 server:
-  port: 9093
+  port: 8093
   servlet:
     context-path: /inventory
 spring:
@@ -23,7 +23,7 @@ spring:
       enabled: false
       
 swagger:
-  url: http://localhost:9093/inventory
+  url: http://localhost:8093/inventory
   
 eureka:
   client:

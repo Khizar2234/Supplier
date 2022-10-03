@@ -30,7 +30,9 @@ public class Address implements Serializable
 	@Column(name="address_id", length = 8)
 	private UUID addressId;
 
-	private String addressLine;
+	private String street;
+	
+	private String area;
 	
 	private String city;
 	
