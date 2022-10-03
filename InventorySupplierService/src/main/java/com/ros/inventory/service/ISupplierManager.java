@@ -8,6 +8,7 @@ import com.ros.inventory.controller.dto.ExternalSupplierDto;
 import com.ros.inventory.controller.dto.ExternalSupplierInfoDto;
 import com.ros.inventory.controller.dto.InternalSupplierDto;
 import com.ros.inventory.controller.dto.InternalSupplierInfoDto;
+import com.ros.inventory.controller.dto.ProductDto;
 import com.ros.inventory.controller.dto.SupplierDescriptionDto;
 import com.ros.inventory.controller.dto.SupplierDto;
 import com.ros.inventory.entities.Product;
@@ -39,6 +40,7 @@ public interface ISupplierManager {
 
 	Product editProduct(Product product) throws InventoryException;
 
-	List<Product> viewAllProducts() throws InventoryException;
-
+	List<ProductDto> viewAllProducts() throws InventoryException;
+	
+	Product deleteProduct(UUID productId) throws InventoryException;
 }

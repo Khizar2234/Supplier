@@ -65,4 +65,8 @@ public class Product implements Serializable {
 	@Column(name = "product_finalPrice")
 	private double finalPrice;
 	
+	@Column(name = "product_status")
+	@Enumerated(EnumType.STRING)
+	private ProductStatus product_status;
+	
 }

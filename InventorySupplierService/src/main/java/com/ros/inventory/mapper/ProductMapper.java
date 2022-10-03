@@ -14,11 +14,10 @@ public interface ProductMapper {
 	@Mapping(source = "p.productCode", target = "productCode")
 	@Mapping(source = "p.productName", target = "productName")
 	@Mapping(source = "p.productType", target = "productType")
-	@Mapping(source = "p.pricePerUnit", target = "pricePerUnit")
 	@Mapping(source = "p.unitMeasurement", target = "unitMeasurement")
-	@Mapping(source = "p.qty", target = "qty")
-	@Mapping(source = "p.productEffectiveDate", target = "productEffectiveDate")
+	@Mapping(source = "p.pricePerUnit", target = "pricePerUnit")
 	@Mapping(source = "p.productVatTax", target = "productVatTax")
+	@Mapping(source = "p.productEffectiveDate", target = "productEffectiveDate")
 
 	ProductDto convertToDto(Product p);
 

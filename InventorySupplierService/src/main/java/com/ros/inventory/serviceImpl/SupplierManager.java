@@ -26,6 +26,7 @@ import com.ros.inventory.controller.dto.ProductDto;
 import com.ros.inventory.controller.dto.SupplierDescriptionDto;
 import com.ros.inventory.controller.dto.SupplierDto;
 import com.ros.inventory.entities.Product;
+import com.ros.inventory.entities.ProductStatus;
 import com.ros.inventory.entities.Supplier;
 import com.ros.inventory.mapper.AddProductMapper;
 import com.ros.inventory.mapper.ExternalSupplierInfoMapper;
@@ -69,6 +70,9 @@ public class SupplierManager implements ISupplierManager {
 
 	@Autowired
 	ProductRepository productRepository;
+	
+	@Autowired
+	ProductMasterRepository productMasterRepository;
 
 	@Override
 	public Supplier saveSupplier(ExternalSupplierDto supply) throws InventoryException {
@@ -112,10 +116,17 @@ public class SupplierManager implements ISupplierManager {
 		// TODO Auto-generated method stub
 
 		Supplier supply = inSupInfoMapper.convertToSupplierEntity(supplierInfo);
-
-		supply.setProducts(null);
-
+				
+		if(supply == null) {
+			throw new InventoryException("Supplier does not exist.");
+		}
+		
 		Supplier supplier = supplyRepo.getById(supply.getSupplierId());
+		if(supplier.getSupplierType() == SupplierType.External) {
+			throw new InventoryException("Supplier is an external supplier. Call updateExt api.");
+		}
+		
+		supply.setProducts(null);
 
 		supply.setProducts(supplier.getProducts());
 		supply.setSupplierStatus(supplier.getSupplierStatus());
@@ -130,11 +141,19 @@ public class SupplierManager implements ISupplierManager {
 		// TODO Auto-generated method stub
 
 		Supplier supply = exSupInfoMapper.convertToSupplierEntity(supplierInfo);
-
-		supply.setProducts(null);
-
+		
+		if(supply == null) {
+			throw new InventoryException("Supplier does not exist.");
+		}
+		
 		Supplier supplier = supplyRepo.getById(supply.getSupplierId());
 
+		if(supplier.getSupplierType() == SupplierType.Internal) {
+			throw new InventoryException("Supplier is an internal supplier. Call updateInt api.");
+		}
+		
+		supply.setProducts(null);
+		
 		supply.setProducts(supplier.getProducts());
 		supply.setSupplierStatus(supplier.getSupplierStatus());
 		supply.setSupplierType(supplier.getSupplierType());
@@ -279,15 +298,38 @@ public class SupplierManager implements ISupplierManager {
 		return productRepository.saveAndFlush(productFromDB);
 	}
 
-	@Override public List<Product> viewAllProducts() throws InventoryException {
+	@Override public List<ProductDto> viewAllProducts() throws InventoryException {
 		List<Product> productList = productRepository.getAll();
+		
+		List<ProductDto> availableProducts = new ArrayList<>();
+		
 		if(productList == null){
 			throw new InventoryException("No products in db.");
 		}
-		else{
+		else{		        
+	        for(Product product: productList) {
+	        	if(product.getProduct_status() == ProductStatus.Available)
+	        		availableProducts.add(pMapper.convertToDto(product));
+	        }
 			// Convert to DTO if required
 			// If multiple product DTO types are there then change method signature to type List<Object>
-			return productList;
+			return availableProducts;
 		}
 	}
+
+	@Override
+	public Product deleteProduct(UUID productId) throws InventoryException {
+		Product existingProduct = productRepository.getById(productId);
+		
+		if(existingProduct == null || existingProduct.getProduct_status() == ProductStatus.Unavailable) {
+			throw new InventoryException("Product with given Id: " + productId + " does not exist.");
+		}
+		
+		existingProduct.setProduct_status(ProductStatus.Unavailable);
+		productRepository.save(existingProduct);
+		
+		productMasterRepository.deleteProductFromMaster(productId);
+		return existingProduct;
+	}
+
 }

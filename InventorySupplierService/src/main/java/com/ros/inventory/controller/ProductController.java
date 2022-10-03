@@ -1,5 +1,7 @@
 package com.ros.inventory.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +59,19 @@ public class ProductController {
 
         return response;
     }
+    
+    /*--------------------- FOR DELETING THE Product ------------------------------*/
+	@DeleteMapping("/deleteProduct/{productId}")
+	@ResponseBody
+	public ResponseEntity<?> deleteProduct(@PathVariable(value = "productId") UUID productId) {
+		ResponseEntity<?> response;
+		try {
+			response = new ResponseEntity<>(suppliermanager.deleteProduct(productId), HttpStatus.OK);
+		} catch (InventoryException e) {
+			response = new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+			e.printStackTrace();
+		}
+		return response;
+	}
 	
 }

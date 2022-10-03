@@ -20,7 +20,6 @@ public class ProductDto {
 	private String productType;
 	private double pricePerUnit;
 	private String unitMeasurement;
-	private int qty;
-	private LocalDate productEffectiveDate;
 	private double productVatTax;
+	private LocalDate productEffectiveDate;
 }
